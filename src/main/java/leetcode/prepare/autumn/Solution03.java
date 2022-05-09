@@ -1,4 +1,4 @@
-package leetcode.prepareForAutumnMoves;
+package leetcode.prepare.autumn;
 
 import org.junit.Test;
 
