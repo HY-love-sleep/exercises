@@ -1,18 +1,21 @@
-package leetcode.prepareForAutumnMoves;
+package leetcode.prepare.autumn;
 
 import org.junit.Test;
 
 public class Solution04 {
     public boolean findNumberIn2DArray(int[][] matrix, int target) {
-        if (matrix.length == 0) return false;
+        if (matrix.length == 0) {
+            return false;
+        }
         int row = 0, col = matrix[0].length - 1;
-        while (row < matrix.length && col >= 0)
-        if (matrix[row][col] == target) {
-            return true;
-        } else if (matrix[row][col] > target) {
-            col -= 1;
-        } else {
-            row += 1;
+        while (row < matrix.length && col >= 0) {
+            if (matrix[row][col] == target) {
+                return true;
+            } else if (matrix[row][col] > target) {
+                col -= 1;
+            } else {
+                row += 1;
+            }
         }
         return false;
     }
