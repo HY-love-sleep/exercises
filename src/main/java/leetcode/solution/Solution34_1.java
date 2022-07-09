@@ -2,7 +2,7 @@ package leetcode.solution;
 
 import org.junit.Test;
 
-public class Solution34 {
+public class Solution34_1 {
     public int roundCnt(int a, int b, int c, int d) {
         int ans = 0;
         int flag = 0; // 这回合中残血碉堡的生命值
