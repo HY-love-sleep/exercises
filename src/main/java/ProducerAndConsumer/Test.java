@@ -1,7 +1,7 @@
 package ProducerAndConsumer;
 
 public class Test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Box b = new Box();
 
         Producer p = new Producer(b);
@@ -12,5 +12,10 @@ public class Test {
 
         t1.start();
         t2.start();
+
+        Thread.sleep(5000);
+
+        t1.stop();
+        t2.stop();
     }
 }
