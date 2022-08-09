@@ -22,7 +22,7 @@ public class SingleTon {
                        但是在多线程环境下会出现获得还没被初始化的实例；
                        例如线程T1 执行了 1和3，此时T2 调用getUniqueInstance后发现 uniqueInstance不为空，因此返回uniqueInstance，
                        但此时uniqueInstance还未被初始化
-                       volatile用来JVM指令重排
+                       volatile用来禁止JVM指令重排
                     */
                     uniqueInstance = new SingleTon();
                 }
