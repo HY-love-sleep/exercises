@@ -24,12 +24,14 @@ public class CASDemo {
 //    }
 
     public static void main(String[] args) {
-        for (int i = 0; i < 3; i++) {
-            new Thread(() -> {
-                while (num.get() < 100) {
-                    System.out.println(Thread.currentThread().getName() + "===>" + num.addAndGet(1));
-                }
-            }).start();
-        }
+//        for (int i = 0; i < 3; i++) {
+//            new Thread(() -> {
+//                while (num.get() < 100) {
+//                    System.out.println(Thread.currentThread().getName() + "===>" + num.addAndGet(1));
+//                }
+//            }).start();
+//        }
+
+        System.out.println(num.compareAndSet(0, 1) + "  current num is : " + num);
     }
 }
