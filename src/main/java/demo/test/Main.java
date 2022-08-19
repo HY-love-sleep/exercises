@@ -1,37 +1,49 @@
 package demo.test;
 
-import demo.LRUCache;
-// ["LRUCache","put","put","get","put","get","put","get","get","get"]
-//        [[2],[1,1],[2,2],[1],[3,3],[2],[4,4],[1],[3],[4]]
-
-public class Main {
-//    static class DLinkedNode {
-//        int key;
-//        int val;
-//        DLinkedNode pre;
-//        DLinkedNode nex;
-//
-//        DLinkedNode() {
-//        }
-//
-//        ;
-//
-//        DLinkedNode(int key, int val) {
-//            this.key = key;
-//            this.val = val;
-//        }
-//    }
-    public static void main (String[] args) {
-        LRUCache cache = new LRUCache(2);
-        cache.put(1, 1);
-        cache.put(2, 2);
-        cache.get(1);
-        cache.put(3, 3);
-        cache.get(2);
-        cache.put(4, 4);
-        cache.get(1);
-        cache.get(3);
-        cache.get(4);
+import java.util.*;
+class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNext()) {
+            String str = sc.nextLine();
+            String[] strs = str.split(" ");
+            int[] nums = new int[strs.length - 1];
+            int k = Integer.parseInt(strs[strs.length - 1]);
+            for (int i = 0; i < strs.length - 1; i++) {
+                nums[i] = Integer.parseInt(strs[i]);
+            }
+            int[] ans = heapSort(k, nums);
+            Arrays.sort(ans);
+            for (int i = 0; i < k; i++) {
+                System.out.print(i == (k - 1) ? ans[i] : ans[i] + " ");
+            }
+        }
     }
 
+    // 最小的K个数那就用大根堆
+    public static int[] heapSort(int k, int[] nums) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>(k, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2 - o1;
+            }
+        });
+
+        for (int num : nums) {
+            heap.offer(num);
+            if (heap.size() > k) {
+                heap.poll();
+            }
+        }
+
+        int[] res = new int[k];
+        int i = 0;
+//        while (!heap.isEmpty()) {
+//            res[i++] = heap.poll();
+//        }
+        for (int e : heap) {
+            res[i++] = e;
+        }
+        return res;
+    }
 }
