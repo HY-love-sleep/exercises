@@ -13,7 +13,6 @@ public class LRUCache {
         DLinkedNode() {
         }
 
-        ;
 
         DLinkedNode(int key, int val) {
             this.key = key;
