@@ -24,8 +24,7 @@ public class Solution11 {
 
     @Test
     public void test() {
-        int[] nums = {3, 4, 5, 1, 2};
-        int[] nums2 = {2, 2, 2, 0, 1};
-        System.out.println(minArray(nums2));
+        int[] nums = {4, 1, 2, 7};
+        System.out.println(minArray(nums));
     }
 }
