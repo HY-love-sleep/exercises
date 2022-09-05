@@ -1,62 +1,62 @@
-import java.util.*;
+// import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 /**
- * 3 3 2
- * 90 90 90
- * 80 100 90
- * 80 85 85
+ * 2
+ * 0 1
+ * 0 10
+ * 0 1
  */
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        String[] str = sc.nextLine().split(" ");
-        int n = Integer.parseInt(str[0]);
-        int m = Integer.parseInt(str[1]);
-        int id = Integer.parseInt(str[2]);
-        int[][] nums = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                nums[i][j] = sc.nextInt();
-            }
+        int n = sc.nextInt();
+        int[] l = new int[n];
+        int[] r = new int[n];
+        int[] t = new int[n];
+
+        for (int p = 0; p < n; p++) {
+            l[p] = sc.nextInt();
+        }
+        for (int q = 0; q < n; q++) {
+            r[q] = sc.nextInt();
+        }
+        for (int k = 0; k < n; k++) {
+            t[k] = sc.nextInt();
         }
 
-        System.out.println(getCount(nums, id));
-    }
+        int[] nums = new int[1000000];
+        Arrays.fill(nums, Integer.MIN_VALUE);
 
-    private static int getCount(int[][] arr, int id) {
-        int n = arr.length;
-        int m = arr[0].length;
-        int[][] nums = new int[n][2];
         for (int i = 0; i < n; i++) {
-            int sum = 0;
-            for (int j = 0; j < m; j++) {
-                sum = sum + arr[i][j];
-            }
-            nums[i][0] = i;
-            nums[i][1] = sum;
-        }
-
-        Arrays.sort(nums, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                int id1 = o1[0];
-                int score1 = o1[1];
-                int id2 = o2[0];
-                int score2 = o2[1];
-                if (score1 != score2) {
-                    return score2 - score1;
-                } else {
-                    return id1 - id2;
+            int cnt = 0;
+            for (int j = l[i]; j <= r[i]; j++) {
+                if (nums[j] == Integer.MIN_VALUE) {
+                    nums[j] = f(j);
+                }
+                if (nums[j] == t[i]) {
+                    cnt++;
                 }
             }
-        });
-
-        for (int i = 0; i < n; i++) {
-            if (nums[i][0] == id - 1) {
-                return i + 1;
+            System.out.println(cnt);
+            if (i != n - 1) {
+                System.out.println(" ");
             }
         }
-        return -1;
     }
+
+    private static int f(int j) {
+        int res = 0;
+        while (j != 0) {
+            res ^= j % 10;
+            j /= 10;
+        }
+        return res;
+    }
+
 
 }
