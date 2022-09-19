@@ -24,7 +24,9 @@ public class TreeNode {
     }
 
     public static TreeNode createTree(int[] pre, int[] in, int l1, int r1, int l2, int r2) {
-        if (l1 > r1 || l2 > r2) return null;
+        if (l1 > r1 || l2 > r2) {
+            return null;
+        }
         TreeNode root = new TreeNode(pre[l1]);
         int pivot = getIndex(in, pre[l1]);
         root.left = createTree(pre, in, l1 + 1, l1 + pivot - l2, l2, pivot - 1);

@@ -3,9 +3,9 @@ package demo;
 /**
  * @author ：hongyan
  * @date ：Created in 2022/8/24 10:09
- * @description：disruptor
- * 生产者每10ms向队列中插入元素， 消费者读取元素并打印到终端
+ * @description：disruptor 生产者每10ms向队列中插入元素， 消费者读取元素并打印到终端
  */
+
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -13,27 +13,25 @@ import com.lmax.disruptor.dsl.ProducerType;
 import java.util.concurrent.ThreadFactory;
 
 
-public class DisruptorDemo
-{
-    public static void main(String[] args) throws Exception
-    {
+public class DisruptorDemo {
+    public static void main(String[] args) throws Exception {
         // 队列中的元素
         class Element {
 
             private int value;
 
-            public int get(){
+            public int get() {
                 return value;
             }
 
-            public void set(int value){
-                this.value= value;
+            public void set(int value) {
+                this.value = value;
             }
 
         }
 
         // 生产者的线程工厂
-        ThreadFactory threadFactory = new ThreadFactory(){
+        ThreadFactory threadFactory = new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {
                 return new Thread(r, "simpleThread");
@@ -49,10 +47,9 @@ public class DisruptorDemo
         };
 
         // 处理Event的handler
-        EventHandler<Element> handler = new EventHandler<Element>(){
+        EventHandler<Element> handler = new EventHandler<Element>() {
             @Override
-            public void onEvent(Element element, long sequence, boolean endOfBatch)
-            {
+            public void onEvent(Element element, long sequence, boolean endOfBatch) {
                 System.out.println("Element: " + element.get());
             }
         };
@@ -74,19 +71,15 @@ public class DisruptorDemo
 
         RingBuffer<Element> ringBuffer = disruptor.getRingBuffer();
 
-        for (int l = 0; true; l++)
-        {
+        for (int l = 0; true; l++) {
             // 获取下一个可用位置的下标
             long sequence = ringBuffer.next();
-            try
-            {
+            try {
                 // 返回可用位置的元素
                 Element event = ringBuffer.get(sequence);
                 // 设置该位置元素的值
                 event.set(l);
-            }
-            finally
-            {
+            } finally {
                 ringBuffer.publish(sequence);
             }
             Thread.sleep(10);

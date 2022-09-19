@@ -1,62 +1,41 @@
-// import org.junit.Test;
-
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
-/**
- * 2
- * 0 1
- * 0 10
- * 0 1
- */
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
-        int[] l = new int[n];
-        int[] r = new int[n];
-        int[] t = new int[n];
-
-        for (int p = 0; p < n; p++) {
-            l[p] = sc.nextInt();
-        }
-        for (int q = 0; q < n; q++) {
-            r[q] = sc.nextInt();
-        }
-        for (int k = 0; k < n; k++) {
-            t[k] = sc.nextInt();
-        }
-
-        int[] nums = new int[1000000];
-        Arrays.fill(nums, Integer.MIN_VALUE);
-
+        int k = sc.nextInt();
+        int[] nums = new int[n];
         for (int i = 0; i < n; i++) {
-            int cnt = 0;
-            for (int j = l[i]; j <= r[i]; j++) {
-                if (nums[j] == Integer.MIN_VALUE) {
-                    nums[j] = f(j);
-                }
-                if (nums[j] == t[i]) {
-                    cnt++;
-                }
-            }
-            System.out.println(cnt);
-            if (i != n - 1) {
-                System.out.println(" ");
-            }
+            nums[i] = sc.nextInt();
         }
+        int ans = maxValue(nums, k, n);
+        System.out.println(ans);
     }
 
-    private static int f(int j) {
-        int res = 0;
-        while (j != 0) {
-            res ^= j % 10;
-            j /= 10;
+    private static int maxValue(int[] nums, int k, int n) {
+        if (nums.length == 0) {
+            return 0;
         }
-        return res;
+        k = Math.min(k, n / 2);
+        int[] a = new int[k + 1];
+        int[] b = new int[k + 1];
+
+        a[0] = -nums[0];
+        b[0] = 0;
+
+        for (int i = 1; i <= k; i++) {
+            a[i] = Integer.MIN_VALUE / 2;
+            b[i] = Integer.MIN_VALUE / 2;
+        }
+        for (int i = 1; i < n; i++) {
+            a[0] = Math.max(a[0], b[0] - nums[i]);
+            for (int j = 1; j <= k; j++) {
+                a[j] = Math.max(a[j], b[j] - nums[i]);
+                b[j] = Math.max(b[j], a[j - 1] + nums[i]);
+            }
+        }
+        return Arrays.stream(b).max().getAsInt();
     }
-
-
 }
