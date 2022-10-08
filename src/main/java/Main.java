@@ -1,41 +1,67 @@
-import java.util.Arrays;
-import java.util.Scanner;
+
+
+import org.junit.Test;
+
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int k = sc.nextInt();
-        int[] nums = new int[n];
-        for (int i = 0; i < n; i++) {
-            nums[i] = sc.nextInt();
-        }
-        int ans = maxValue(nums, k, n);
-        System.out.println(ans);
+        String s = sc.nextLine();
+        String[] p = sc.next().split(",");
+        System.out.println(matched(s, p));
     }
 
-    private static int maxValue(int[] nums, int k, int n) {
-        if (nums.length == 0) {
-            return 0;
-        }
-        k = Math.min(k, n / 2);
-        int[] a = new int[k + 1];
-        int[] b = new int[k + 1];
-
-        a[0] = -nums[0];
-        b[0] = 0;
-
-        for (int i = 1; i <= k; i++) {
-            a[i] = Integer.MIN_VALUE / 2;
-            b[i] = Integer.MIN_VALUE / 2;
-        }
-        for (int i = 1; i < n; i++) {
-            a[0] = Math.max(a[0], b[0] - nums[i]);
-            for (int j = 1; j <= k; j++) {
-                a[j] = Math.max(a[j], b[j] - nums[i]);
-                b[j] = Math.max(b[j], a[j - 1] + nums[i]);
+    public static boolean matched(String s, String[] p) {
+        for (int i = 0; i < p.length; i++) {
+            int tmp = strStr(s, p[i]);
+            while (tmp != -1) {
+                s = s.substring(0, tmp) + s.substring(tmp + p[i].length());
+                tmp = strStr(s, p[i]);
             }
         }
-        return Arrays.stream(b).max().getAsInt();
+        return s.length() == 0;
     }
+
+    private static int strStr(String haystack, String needle) {
+        int i=0,j=0;
+        int[] next=getNext(needle);
+        while (i< haystack.length() && j<needle.length()){
+            if (j==-1 || haystack.charAt(i)==needle.charAt(j)){
+                i++;
+                j++;
+            }else {
+                j=next[j];
+            }
+        }
+        if (j==needle.length()) {
+            return i-j;
+        }
+        else {
+            return -1;
+        }
+    }
+
+
+    //求next[]数组,next[0]=-1 当遇到冲突时直接查next数组并且返回到相应位置
+    private static int[] getNext(String sub){
+        int[] next=new int[sub.length()+1];
+        int i=0;
+        int j=-1;
+        next[0]=-1;
+        while (i<sub.length()){
+            if (j==-1 || sub.charAt(i) == sub.charAt(j)){
+                next[++i]=++j;
+            }else {
+                j=next[j];
+            }
+        }
+        return next;
+    }
+
+    @Test
+    public void test() {
+
+    }
+
 }
