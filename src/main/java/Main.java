@@ -1,67 +1,73 @@
-
-
+import leetcode.utils.CreateList;
+import leetcode.utils.ListNode;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        String s = sc.nextLine();
-        String[] p = sc.next().split(",");
-        System.out.println(matched(s, p));
+        String str = sc.next();
+        String[] strs = str.split(" ");
+
     }
 
-    public static boolean matched(String s, String[] p) {
-        for (int i = 0; i < p.length; i++) {
-            int tmp = strStr(s, p[i]);
-            while (tmp != -1) {
-                s = s.substring(0, tmp) + s.substring(tmp + p[i].length());
-                tmp = strStr(s, p[i]);
-            }
+    // 反转[left, right]， 下标从1开始
+    public static ListNode reverseBetween(ListNode head, int left, int right) {
+        ListNode dummyNode = new ListNode(-1);
+        dummyNode.next = head;
+        ListNode pre = dummyNode;
+        for (int i = 0; i < left - 1; i++) {
+            pre = pre.next;
         }
-        return s.length() == 0;
+        ListNode cur = pre.next;
+        ListNode next;
+        for (int i = 0; i < right - left; i++) {
+            next = cur.next;
+            cur.next = next.next;
+            next.next = pre.next;
+            pre.next = next;
+        }
+        return dummyNode.next;
     }
 
-    private static int strStr(String haystack, String needle) {
-        int i=0,j=0;
-        int[] next=getNext(needle);
-        while (i< haystack.length() && j<needle.length()){
-            if (j==-1 || haystack.charAt(i)==needle.charAt(j)){
-                i++;
-                j++;
-            }else {
-                j=next[j];
+    public static ListNode reverse(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode cur = head;
+        int left = 1;
+        while (cur != null && cur.next != null) {
+            int right = left - 1;
+            while (cur.next != null && cur.next.val != cur.val) {
+                right += 1;
+                cur = cur.next;
             }
-        }
-        if (j==needle.length()) {
-            return i-j;
-        }
-        else {
-            return -1;
-        }
-    }
-
-
-    //求next[]数组,next[0]=-1 当遇到冲突时直接查next数组并且返回到相应位置
-    private static int[] getNext(String sub){
-        int[] next=new int[sub.length()+1];
-        int i=0;
-        int j=-1;
-        next[0]=-1;
-        while (i<sub.length()){
-            if (j==-1 || sub.charAt(i) == sub.charAt(j)){
-                next[++i]=++j;
-            }else {
-                j=next[j];
+            if (cur.next == null) {
+                right += 1;
             }
+            reverseBetween(head, left, right);
+            left = right + 1;
+            while (cur.next != null && cur.next.val == cur.val) {
+                cur = cur.next;
+                left += 1;
+            }
+            left += 1;
+            cur = cur.next;
         }
-        return next;
+        return head;
     }
 
     @Test
     public void test() {
-
+        int[] nums = {1, 2, 2, 3, 4, 5, 3, 3, 3, 4, 5};
+//        int[] nums = {1, 1, 1, 2, 3, 4, 4, 5};
+        ListNode head = CreateList.createList(nums);
+        CreateList.printList(head);
+        System.out.println(" ");
+        reverse(head);
+        CreateList.printList(head);
     }
-
 }

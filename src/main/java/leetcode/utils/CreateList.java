@@ -18,7 +18,7 @@ public class CreateList {
             System.out.println("list is empty");
         }
         while (node != null) {
-            System.out.print(node.val + " , ");
+            System.out.print(node.val + " ");
             node = node.next;
         }
     }
